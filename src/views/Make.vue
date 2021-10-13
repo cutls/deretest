@@ -235,15 +235,21 @@ export default Vue.extend({
 			const b64 = (await readAsDataURL(file)) as string
 			let b64Raw
 			if (b64) b64Raw = b64.replace(/data:[^,]+,/, '')
-
-			const p = await fetch(getEndpoint('upload', { file: `${uuid}${name}`, pwd }), {
-				method: 'post',
-				body: JSON.stringify({ b64: b64Raw }),
-			})
-			const r = await p.text()
-			console.log(r)
-			this.quiz[i].attached = assetUrl
-			this.loading = false
+			try {
+				const p = await fetch(getEndpoint('upload', { file: `${uuid}${name}`, pwd }), {
+					method: 'post',
+					body: JSON.stringify({ b64: b64Raw }),
+				})
+				const r = await p.text()
+				console.log(r)
+				this.quiz[i].attached = assetUrl
+				this.loading = false
+				if (r !== 'success') alert('失敗しました。')
+				if (r !== 'success') localStorage.removeItem('pwd')
+			} catch (e) {
+				this.loading = false
+				localStorage.removeItem('pwd')
+			}
 		},
 		delImage: function (i: number) {
 			this.quiz[i].attached = ''
@@ -402,7 +408,9 @@ export default Vue.extend({
 				if (r === 'success') location.href = `/q/${this.quizId}`
 				else if (r === '被っています') alert('IDが被っています。')
 				else alert('成功したか失敗したかわかりません。サーバーからのメッセージ: ' + r)
+				if (r !== 'success') localStorage.removeItem('pwd')
 			} catch (e) {
+				localStorage.removeItem('pwd')
 				console.error(e)
 				this.loading = false
 				return alert('失敗しました。')
