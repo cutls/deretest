@@ -1,24 +1,13 @@
 # deretest
 
-## Project setup
-```
-yarn install
-```
+デレマスクイズを作りたかったので、そういうツール
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+proccess.env(.env)にENV=(config JSON)を入力
 
-### Compiles and minifies for production
+config JSON
 ```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+{
+    "uploader": "uploader APIのendpoint",
+    "get": "get APIのendpoint",
+    "post": "post APIのendpoint"
+}

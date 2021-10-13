@@ -222,6 +222,9 @@ export default Vue.extend({
 			})
 		},
 		changeFile: async function (i: number) {
+			const pwd = localStorage.getItem('pwd') || prompt('問題作成パスワードを入力してください。')
+			if (!pwd) return false
+			localStorage.setItem('pwd', pwd)
 			this.loading = true
 			const e = document.querySelector(`#asset${i}`) as any
 			const [file] = e.files
@@ -232,7 +235,7 @@ export default Vue.extend({
 			let b64Raw
 			if (b64) b64Raw = b64.replace(/data:[^,]+,/, '')
 
-			const p = await fetch(getEndpoint('upload', { file: `${uuid}${name}` }), {
+			const p = await fetch(getEndpoint('upload', { file: `${uuid}${name}`, pwd }), {
 				method: 'post',
 				body: JSON.stringify({ b64: b64Raw }),
 			})
@@ -358,8 +361,9 @@ export default Vue.extend({
 			this.quiz = a
 		},
 		complete: async function () {
-			const pwd = prompt('問題作成パスワードを入力してください。')
+			const pwd = localStorage.getItem('pwd') || prompt('問題作成パスワードを入力してください。')
 			if (!pwd) return false
+			localStorage.setItem('pwd', pwd)
 			if (!this.quizTitle) return alert(`タイトルが指定されていません。`)
 			if (!this.quizId.match(/^[a-zA-Z0-9-_]+$/)) return alert(`IDの形式が不正です。`)
 			for (let [i, q] of this.quiz.entries()) {
