@@ -130,6 +130,9 @@ export default Vue.extend({
 			return '一部'
 		},
 		saveAndQuestion: function (isNext: boolean, final?: boolean) {
+			if(this.question.inputTypeRegExp && this.question.answerType === 'input') {
+				if (!this.answer.match(new RegExp(this.question.inputTypeRegExp))) return alert(`入力値に誤りがあります。`)
+			}
 			if (!this.correct[this.question.uniqueId]) {
 				this.correct[this.question.uniqueId] = this.answer
 			} else {

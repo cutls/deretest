@@ -366,13 +366,13 @@ export default Vue.extend({
 				//バリデーション
 				const useI = i + 1
 				if (!q.correctAnswer.length) return alert(`第${useI}問: 答えが登録されていません。答えを入力した後にOKを押しましたか？`)
-				if (!q.inputTypeRegExp) return alert(`第${useI}問: 「入力値を制限する正規表現」は空欄にできません。`)
+				if (!q.inputTypeRegExp && q.answerType === 'input') return alert(`第${useI}問: 「入力値を制限する正規表現」は空欄にできません。`)
 				if (!q.string) return alert(`第${useI}問: 「問題文」は空欄にできません。`)
 				if (q.answerType === 'select' && !q.answers) return alert(`第${useI}問: 選択肢が登録されていません。答えを入力した後にOKを押しましたか？`)
 				if (!q.point || q.point < 1) return alert(`第${useI}問: 点数には1点以上を指定してください。`)
 				for (const a of q.correctAnswer) {
 					if (!a) return alert(`第${useI}問: 答えは空欄にはできません。一度リセットを押して再度登録してください。`)
-					if (!a.match(new RegExp(q.inputTypeRegExp))) return alert(`第${useI}問: 答えが入力値の制限と一致しません`)
+					if(q.inputTypeRegExp && q.answerType === 'input') if (!a.match(new RegExp(q.inputTypeRegExp))) return alert(`第${useI}問: 答えが入力値の制限と一致しません`)
 				}
 
 				if (q.questionType !== 'normal' && !q.attached) return alert(`第${useI}問: 画像や音声を添付しない場合は問題タイプを「通常」にしてください。`)
