@@ -399,11 +399,12 @@ export default Vue.extend({
 				const r = await p.text()
 				this.loading = false
 				if (r === 'success') location.href = `/q/${this.quizId}`
-				else alert('成功したか失敗したかわかりません。サーバーからのメッセージ' + r)
+				else if (r === '被っています') alert('IDが被っています。')
+				else alert('成功したか失敗したかわかりません。サーバーからのメッセージ: ' + r)
 			} catch (e) {
 				console.error(e)
 				this.loading = false
-				return alert('失敗しました。IDが被っている可能性が高いです。')
+				return alert('失敗しました。')
 			}
 		},
 	},
