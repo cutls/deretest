@@ -376,7 +376,7 @@ export default Vue.extend({
 				if (!q.point || q.point < 1) return alert(`第${useI}問: 点数には1点以上を指定してください。`)
 				for (const a of q.correctAnswer) {
 					if (!a) return alert(`第${useI}問: 答えは空欄にはできません。一度リセットを押して再度登録してください。`)
-					if(q.inputTypeRegExp && q.answerType === 'input') if (!a.match(new RegExp(q.inputTypeRegExp))) return alert(`第${useI}問: 答えが入力値の制限と一致しません`)
+					if (q.inputTypeRegExp && q.answerType === 'input') if (!a.match(new RegExp(q.inputTypeRegExp))) return alert(`第${useI}問: 答えが入力値の制限と一致しません`)
 				}
 
 				if (q.questionType !== 'normal' && !q.attached) return alert(`第${useI}問: 画像や音声を添付しない場合は問題タイプを「通常」にしてください。`)
@@ -399,11 +399,11 @@ export default Vue.extend({
 				const r = await p.text()
 				this.loading = false
 				if (r === 'success') location.href = `/q/${this.quizId}`
-				else alert('成功したか失敗したかわかりません…')
+				else alert('成功したか失敗したかわかりません。サーバーからのメッセージ' + r)
 			} catch (e) {
 				console.error(e)
 				this.loading = false
-				return alert('失敗しました。')
+				return alert('失敗しました。IDが被っている可能性が高いです。')
 			}
 		},
 	},

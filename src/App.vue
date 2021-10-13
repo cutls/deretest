@@ -28,7 +28,8 @@
 button {
 	padding: 0.5rem;
 }
-input[type=text], select {
+input[type='text'],
+select {
 	height: 1.5rem;
 	min-width: 5rem;
 }
