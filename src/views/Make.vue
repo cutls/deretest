@@ -231,8 +231,8 @@ export default Vue.extend({
 			const b64 = (await readAsDataURL(file)) as string
 			let b64Raw
 			if (b64) b64Raw = b64.replace(/data:[^,]+,/, '')
-			
-			const p = await fetch(getEndpoint('upload', {file: `${uuid}${name}`}), {
+
+			const p = await fetch(getEndpoint('upload', { file: `${uuid}${name}` }), {
 				method: 'post',
 				body: JSON.stringify({ b64: b64Raw }),
 			})
@@ -348,16 +348,18 @@ export default Vue.extend({
 			this.cards = cardsF
 		},
 		deleteQ: function () {
-			if(this.quiz.length <= 1) return alert('この機能は2問以上あるときにのみ使用可能です。')
-			if(!confirm('最後の問題を削除します。よろしいですか？')) return false
+			if (this.quiz.length <= 1) return alert('この機能は2問以上あるときにのみ使用可能です。')
+			if (!confirm('最後の問題を削除します。よろしいですか？')) return false
 			const target = this.quiz[this.quiz.length - 1].uniqueId
 			const a = []
-			for(const q of this.quiz) {
-				if(q.uniqueId !== target) a.push(q)
+			for (const q of this.quiz) {
+				if (q.uniqueId !== target) a.push(q)
 			}
 			this.quiz = a
 		},
 		complete: async function () {
+			const pwd = prompt('問題作成パスワードを入力してください。')
+			if (!pwd) return false
 			if (!this.quizTitle) return alert(`タイトルが指定されていません。`)
 			if (!this.quizId.match(/^[a-zA-Z0-9-_]+$/)) return alert(`IDの形式が不正です。`)
 			for (let [i, q] of this.quiz.entries()) {
@@ -376,7 +378,7 @@ export default Vue.extend({
 				if (q.questionType !== 'normal' && !q.attached) return alert(`第${useI}問: 画像や音声を添付しない場合は問題タイプを「通常」にしてください。`)
 				if (typeof q.point === 'string') q.point = parseInt(q.point, 10)
 			}
-			if(!confirm(`${this.quiz.length}問のクイズを作成します。よろしいですか？`)) return false
+			if (!confirm(`${this.quiz.length}問のクイズを作成します。よろしいですか？`)) return false
 			this.loading = true
 			//IDやタイトルも。idは小文字で。
 			const param = {
@@ -386,13 +388,13 @@ export default Vue.extend({
 				questions: this.quiz,
 			}
 			try {
-				const p = await fetch(getEndpoint('post', {}), {
+				const p = await fetch(getEndpoint('post', { pwd }), {
 					method: 'post',
 					body: JSON.stringify(param),
 				})
 				const r = await p.text()
 				this.loading = false
-				if(r === 'success') location.href = `/q/${this.quizId}`
+				if (r === 'success') location.href = `/q/${this.quizId}`
 				else alert('成功したか失敗したかわかりません…')
 			} catch (e) {
 				console.error(e)
@@ -414,7 +416,6 @@ function readAsDataURL(blob: Blob) {
 		reader.readAsDataURL(blob)
 	})
 }
-
 </script>
 <style scoped>
 .make {

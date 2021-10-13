@@ -1,5 +1,5 @@
 <template>
-	<div class="home" v-if="found">
+	<div class="home" v-if="initiate">
 		<h2>{{ title }}</h2>
 		<p>{{ description }}</p>
 		<div v-if="started">
@@ -9,7 +9,7 @@
 			<button @click="refresh()">終了</button>
 		</div>
 		<div v-else>
-			<p v-if="loading">データを読み込んでいます。</p>
+			<p v-if="loading">クイズに必要なデータを読み込んでいます。</p>
 			<button @click="start" :disabled="loading">スタート</button>
 			<h3>注意事項</h3>
 			<div class="centarize">
@@ -29,7 +29,10 @@
 			</div>
 		</div>
 	</div>
-	<p v-else>質問は見つかりませんでした</p>
+	<div v-else>
+		<p v-if="notfound">問題は見つかりませんでした。</p>
+		<p v-else>問題データを読み込んでいます。</p>
+	</div>
 </template>
 
 <script lang="ts">
@@ -44,7 +47,8 @@ export default Vue.extend({
 	components: { Quiz, Result },
 	data() {
 		return {
-			found: false,
+			notfound: false,
+			initiate: false,
 			title: '',
 			description: '',
 			started: false,
@@ -71,9 +75,10 @@ export default Vue.extend({
 			this.quiz = json.questions
 			document.title = json.title
 			this.loading = false
-			this.found = true
+			this.notfound = false
+			this.initiate = true
 		} catch {
-			this.found = false
+			this.notfound = true
 		}
 	},
 	methods: {
@@ -89,7 +94,9 @@ export default Vue.extend({
 				this.loading = false
 				this.started = true
 			} catch {
-				this.found = false
+				alert('データの読み込みに失敗しました。')
+				this.notfound = true
+				this.initiate = false
 			}
 		},
 		finishFunc: function (answers: any) {
