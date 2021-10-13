@@ -177,6 +177,7 @@ export default Vue.extend({
 	},
 	mounted: async function () {
 		document.title = 'クイズを作成する'
+		localStorage.removeItem('pwd')
 		try {
 			this.loading = true
 			const songsRaw = await fetch('https://api.fujiwarahaji.me/v1/list?type=music&music_type=cg')
