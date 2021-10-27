@@ -23,14 +23,33 @@
 				<select v-model="q.questionType">
 					<option value="normal">通常</option>
 					<option value="withImage">画像付き</option>
-					<option value="withAudio">音声付き</option></select
-				><br />
+					<option value="withAudio">音声付き</option>
+					<option value="withYouTube">YouTube付き</option>
+				</select>
+				<br />
 				<div v-if="q.questionType === 'withImage' || q.questionType === 'withAudio'">
 					画像や音声<br />
 					<input type="file" @change="changeFile(i)" :id="`asset${i}`" /><button @click="delImage(i)">削除</button>
 				</div>
+				<div v-if="q.questionType === 'withYouTube'">
+					動画URL<br />
+					<input type="text" v-model="q.attached" placeholder="https://youtu.be/..." ptn="11文字" />
+				</div>
+
 				<img :src="q.attached" v-if="q.questionType === 'withImage'" class="attach" />
 				<audio :src="q.attached" v-if="q.questionType === 'withAudio'" controls />
+				<div class="youtube" v-if="q.attached.match(/https:\/\/youtu.be\/[a-zA-Z0-9]{11}/)">
+					<iframe
+						width="783"
+						height="440"
+						:src="q.attached.replace('https://youtu.be/', 'https://www.youtube.com/embed/')"
+						title="YouTube video player"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					></iframe>
+				</div>
+
 				<p class="noPadding">点数</p>
 				<input type="number" v-model="q.point" /><br />
 				解答タイプ<br />
@@ -387,6 +406,7 @@ export default Vue.extend({
 				}
 
 				if (q.questionType !== 'normal' && !q.attached) return alert(`第${useI}問: 画像や音声を添付しない場合は問題タイプを「通常」にしてください。`)
+				if (q.questionType === 'withYouTube' && q.attached) if (!q.attached.match(/https:\/\/youtu.be\/[a-zA-Z0-9]{11}/)) return alert(`第${useI}問:YouTubeアドレスが不正です。`)
 				if (typeof q.point === 'string') q.point = parseInt(q.point, 10)
 			}
 			if (!confirm(`${this.quiz.length}問のクイズを作成します。よろしいですか？`)) return false
@@ -477,5 +497,21 @@ textarea {
 	width: 100vw;
 	height: 100vh;
 	z-index: 9999;
+}
+.youtube {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  margin-bottom: 50px;
+}
+
+.youtube iframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>

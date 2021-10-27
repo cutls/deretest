@@ -10,7 +10,7 @@ export interface IQuiz {
     answerType: 'select' | 'input' | 'idol' | 'card' | 'song'
     config?: IConfig
     inputTypeRegExp?: string
-    questionType: 'normal' | 'withImage' | 'withAudio'
+    questionType: 'normal' | 'withImage' | 'withAudio' | 'withYouTube'
     correctAnswer: string | string[]
     answers?: string[]
     allowToUseTerminal?: boolean

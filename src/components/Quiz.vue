@@ -10,6 +10,17 @@
 				再生ボタンを押して再生
 				<audio :src="question.attached" controls />
 			</div>
+			<div v-if="question.questionType === 'withYouTube'" class="textAlignCenter attach youtube">
+				<iframe
+					width="783"
+					height="440"
+					:src="question.attached.replace('https://youtu.be/', 'https://www.youtube.com/embed/')"
+					title="YouTube video player"
+					frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+					allowfullscreen
+				></iframe>
+			</div>
 			<div v-if="question.answerType === 'select'">
 				選択肢:
 				<select v-model="answer">
@@ -230,5 +241,21 @@ export default Vue.extend({
 }
 .selected {
 	background-color: #f5f5f5;
+}
+.youtube {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  margin-bottom: 50px;
+}
+
+.youtube iframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>
