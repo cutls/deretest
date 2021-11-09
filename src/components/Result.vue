@@ -96,10 +96,10 @@ export default Vue.extend({
 			if (typeof answer === 'string') {
 				return answer
 			} else if(point) {
-				let a = ''
+				let b = ''
 				let i = 0
 				for(const a of answer) {
-					a = a ? `, ${a}(${point}%)` : `${a}(${point}%)`
+					b = b ? `${b}, ${a}(${point}%)` : `${a}(${point}%)`
 					i++
 				}
 				return a
