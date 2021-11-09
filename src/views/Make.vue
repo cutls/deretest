@@ -155,7 +155,10 @@
 						<input type="hidden" v-model="addNewCollectAnswer[i]" />
 					</div>
 					<p>解説</p>
-					<textarea v-model="q.comment" />
+					<textarea v-model="q.comment" /><br />
+					<input type="file" @change="changeFile(i, true)" :id="`asset${i}`" />
+					<button @click="delImage(i, true)">削除</button><br />
+					<img :src="q.commentAttached" v-if="q.commentAttached" class="attach" />
 				</div>
 			</div>
 			<br />
@@ -247,7 +250,7 @@ export default Vue.extend({
 				point: 10,
 			})
 		},
-		changeFile: async function (i: number) {
+		changeFile: async function (i: number, forComment?: boolean) {
 			const pwd = localStorage.getItem('pwd') || prompt('問題作成パスワードを入力してください。')
 			if (!pwd) return false
 			localStorage.setItem('pwd', pwd)
@@ -267,7 +270,8 @@ export default Vue.extend({
 				})
 				const r = await p.text()
 				console.log(r)
-				this.quiz[i].attached = assetUrl
+				if(!forComment) this.quiz[i].attached = assetUrl
+				if(forComment) this.quiz[i].commentAttached = assetUrl
 				this.loading = false
 				if (r !== 'success') alert('失敗しました。')
 				if (r !== 'success') localStorage.removeItem('pwd')
@@ -276,8 +280,9 @@ export default Vue.extend({
 				localStorage.removeItem('pwd')
 			}
 		},
-		delImage: function (i: number) {
-			this.quiz[i].attached = ''
+		delImage: function (i: number, forComment?: boolean) {
+			if(!forComment) this.quiz[i].attached = ''
+			if(forComment)  this.quiz[i].commentAttached = ''
 		},
 		doAddNewAnswer: function (i: number) {
 			const as = this.quiz[i].answers

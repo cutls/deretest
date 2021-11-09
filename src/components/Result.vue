@@ -10,7 +10,7 @@
 		<div v-for="[i] of quiz.entries()" :key="i">
 			<p>第{{ i + 1 }}問: {{ quiz[i].string }}</p>
 			<div v-if="quiz[i].questionType === 'withImage'" class="textAlignCenter attach">
-				<img :src="quiz[i].attached" />
+				<img :src="quiz[i].attached" class="attach" />
 			</div>
 			<div v-if="quiz[i].questionType === 'withAudio'" class="textAlignCenter attach">
 				再生ボタンを押して再生
@@ -21,6 +21,7 @@
 			<p>{{ isCorrect(quiz[i].correctAnswer, quiz[i].uniqueId) ? '正解です' : '不正解です' }}</p>
 			<p>解説</p>
 			<p>{{quiz[i].comment}}</p>
+			<img :src="quiz[i].commentAttached" v-if="quiz[i].commentAttached" class="attach" />
 			<hr />
 		</div>
 	</div>
@@ -130,6 +131,10 @@ canvas {
 	max-width: 100%;
 }
 #resultImage {
+	min-width: 300px;
+	max-width: 100%;
+}
+img.attach {
 	min-width: 300px;
 	max-width: 100%;
 }

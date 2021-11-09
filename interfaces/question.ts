@@ -18,6 +18,7 @@ export interface IQuiz {
     allowToUseTerminal?: boolean
     point: number
     comment?: string
+    commentAttached?: string
 }
 
 export interface IConfig {
