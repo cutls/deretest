@@ -3,10 +3,16 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 import Print from '../views/Print.vue'
 import Make from '../views/Make.vue'
+import Top from '../views/Top.vue'
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
+	{
+		path: '/',
+		name: 'Top',
+		component: Top,
+	},
 	{
 		path: '/q/:id',
 		name: 'Home',

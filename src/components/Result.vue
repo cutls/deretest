@@ -1,7 +1,5 @@
 <template>
 	<div class="centarize">
-		<div v-if="!image && notBot" id="image">ただいま画像を生成中です。30秒程度かかりますが、これが終わるまでしばらくお待ちください。<br /></div>
-		<img :src="image" v-if="notBot && image" id="resultImage" />
 		<div class="textAlignCenter">
 			あなたの点数は、
 			<h1>{{ score }}</h1>
@@ -16,9 +14,20 @@
 				再生ボタンを押して再生
 				<audio :src="quiz[i].attached" controls />
 			</div>
+			<div class="youtube" v-if="quiz[i].attached.match(/https:\/\/youtu.be\/[a-zA-Z0-9]{11}/)">
+					<iframe
+						width="783"
+						height="440"
+						:src="q.attached.replace('https://youtu.be/', 'https://www.youtube.com/embed/')"
+						title="YouTube video player"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					></iframe>
+				</div>
 			<p>あなたの答え: {{ answer[quiz[i].uniqueId] }}</p>
 			<p>正答: {{ tsCheck(quiz[i].correctAnswer, quiz[i].correctAnswerIncline) }}</p>
-			<p>{{ isCorrect(quiz[i].correctAnswer, quiz[i].uniqueId) ? '正解です' : '不正解です' }}</p>
+			<p>{{ isCorrect(quiz[i].correctAnswer, quiz[i].correctAnswerIncline, quiz[i].uniqueId) ? '正解です' : '不正解です' }}</p>
 			<p>解説</p>
 			<p>{{quiz[i].comment}}</p>
 			<img :src="quiz[i].commentAttached" v-if="quiz[i].commentAttached" class="attach" />
@@ -59,6 +68,7 @@ export default Vue.extend({
 			const r = location.pathname.match(/\/q\/(.+)$/)
 			if (r) {
 				const id = r[r.length - 1]
+				/*
 				fetch(`https://2uwcmuu0id.execute-api.ap-northeast-1.amazonaws.com/default/kukai-ss?id=${id}&hash=${encoded}`)
 					.then((response) => response.text())
 					.then((data) => {
@@ -67,6 +77,7 @@ export default Vue.extend({
 						scrollTo(0, 0)
 					})
 				alert('ただいま画像を生成中です。30秒程度かかりますが、これが終わるまでOKを押してしばらくお待ちください。')
+				*/
 			}
 		}
 		for (const qr of this.quiz) {
@@ -146,5 +157,21 @@ canvas {
 img.attach {
 	min-width: 300px;
 	max-width: 100%;
+}
+.youtube {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  margin-bottom: 50px;
+}
+
+.youtube iframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>

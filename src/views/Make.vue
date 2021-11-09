@@ -156,7 +156,7 @@
 					</div>
 					<p>解説</p>
 					<textarea v-model="q.comment" /><br />
-					<input type="file" @change="changeFile(i, true)" :id="`asset${i}`" />
+					<input type="file" @change="changeFile(i, true)" :id="`assetComment${i}`" />
 					<button @click="delImage(i, true)">削除</button><br />
 					<img :src="q.commentAttached" v-if="q.commentAttached" class="attach" />
 				</div>
@@ -255,7 +255,7 @@ export default Vue.extend({
 			if (!pwd) return false
 			localStorage.setItem('pwd', pwd)
 			this.loading = true
-			const e = document.querySelector(`#asset${i}`) as any
+			const e = document.querySelector(forComment ? `#assetComment${i}` : `#asset${i}`) as any
 			const [file] = e.files
 			const { name } = file
 			const uuid = v4()
