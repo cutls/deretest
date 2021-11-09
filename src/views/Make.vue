@@ -102,7 +102,7 @@
 				<div v-for="[l] of q.correctAnswer.entries()" :key="`i${i}l${l}`">
 					<div>
 						{{ l + 1 }}: {{ q.correctAnswer[l] }}
-						傾斜: <input type="number" v-model="q.correctAnswerIncline[i]" style="width: 50px" />%
+						傾斜: <input type="number" v-model="q.correctAnswerIncline[l]" style="width: 50px" />%
 					</div>
 				</div>
 				<div>
