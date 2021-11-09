@@ -99,7 +99,7 @@ export default Vue.extend({
 				let b = ''
 				let i = 0
 				for(const a of answer) {
-					b = b ? `${b}, ${a}(${point}%)` : `${a}(${point}%)`
+					b = b ? `${b}, ${a}(${point[i]}%)` : `${a}(${point[i]}%)`
 					i++
 				}
 				return b
