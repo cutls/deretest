@@ -17,8 +17,10 @@
 				<audio :src="quiz[i].attached" controls />
 			</div>
 			<p>あなたの答え: {{ answer[quiz[i].uniqueId] }}</p>
-			<p>正答: {{ tsCheck(quiz[i].correctAnswer) }}</p>
+			<p>正答: {{ tsCheck(quiz[i].correctAnswer) }} (傾斜%: {{ tsCheck(quiz[i].correctAnswerIncline) }}</p>
 			<p>{{ isCorrect(quiz[i].correctAnswer, quiz[i].uniqueId) ? '正解です' : '不正解です' }}</p>
+			<p>解説</p>
+			<p>{{quiz[i].comment}}</p>
 			<hr />
 		</div>
 	</div>
@@ -69,22 +71,27 @@ export default Vue.extend({
 		for (const qr of this.quiz) {
 			const q = qr as IQuiz
 			this.perfect = this.perfect + q.point
-			if (this.isCorrect(q.correctAnswer, q.uniqueId)) this.score = this.score + q.point
+			this.score = this.score + ( q.point * this.isCorrect(q.correctAnswer, q.correctAnswerIncline, q.uniqueId))
 		}
 	},
 	methods: {
-		isCorrect: function (correctAnswer: string | string[], uniqueId: string) {
+		isCorrect: function (correctAnswer: string | string[], caInc: number[] | undefined, uniqueId: string) {
 			if (typeof correctAnswer === 'string') {
-				if (correctAnswer === this.answer[uniqueId]) return true
-				return false
+				if (correctAnswer === this.answer[uniqueId]) return 1
+				return 0
 			} else {
+				let i = 0
 				for (const a of correctAnswer) {
-					if (a === this.answer[uniqueId]) return true
+					if (a === this.answer[uniqueId]) {
+						if (!caInc) return 1
+						if (caInc[i]) return caInc[i] / 100
+					}
+					i++
 				}
-				return false
+				return 0
 			}
 		},
-		tsCheck: function (answer: string | string[]) {
+		tsCheck: function (answer: string | string[] | number[]) {
 			if (typeof answer === 'string') {
 				return answer
 			} else {

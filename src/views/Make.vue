@@ -100,7 +100,10 @@
 				<button @click="resetCAnswer(i)">リセット</button>
 				<p class="noPadding">{{ q.correctAnswer.length }}パターンの答えが用意されています</p>
 				<div v-for="[l] of q.correctAnswer.entries()" :key="`i${i}l${l}`">
-					<div>{{ l + 1 }}: {{ q.correctAnswer[l] }}</div>
+					<div>
+						{{ l + 1 }}: {{ q.correctAnswer[l] }}
+						<input type="number" v-model="q.correctAnswerIncline[i]" width="50" />
+					</div>
 				</div>
 				<div>
 					<div v-if="q.answerType === 'input'">
@@ -151,6 +154,8 @@
 						</div>
 						<input type="hidden" v-model="addNewCollectAnswer[i]" />
 					</div>
+					<p>解説</p>
+					<textarea v-model="q.comment" />
 				</div>
 			</div>
 			<br />
@@ -230,6 +235,7 @@ export default Vue.extend({
 				answerType: 'input',
 				questionType: 'normal',
 				correctAnswer: [],
+				correctAnswerIncline: [],
 				answers: [],
 				inputTypeRegExp: '.+',
 				config: {
@@ -284,10 +290,13 @@ export default Vue.extend({
 		},
 		doAddNewCollectAnswer: function (i: number) {
 			const as = this.quiz[i].correctAnswer as string[]
+			const asi = this.quiz[i].correctAnswerIncline as number[]
 			if (as) {
 				as.push(this.addNewCollectAnswer[i])
+				asi.push(100)
 			} else {
 				this.quiz[i].correctAnswer = [this.addNewCollectAnswer[i]]
+				this.quiz[i].correctAnswerIncline = [100]
 			}
 			this.addNewCollectAnswer[i] = ''
 			this.query[i] = ''

@@ -3,6 +3,7 @@ export interface IQuestion {
     description: string
     questions: IQuiz[]
 }
+
 export interface IQuiz {
     uniqueId: string
     string: string
@@ -11,10 +12,12 @@ export interface IQuiz {
     config?: IConfig
     inputTypeRegExp?: string
     questionType: 'normal' | 'withImage' | 'withAudio' | 'withYouTube'
-    correctAnswer: string | string[]
+    correctAnswer: string[]
+    correctAnswerIncline: number[]
     answers?: string[]
     allowToUseTerminal?: boolean
     point: number
+    comment?: string
 }
 
 export interface IConfig {
