@@ -102,7 +102,7 @@ export default Vue.extend({
 					b = b ? `${b}, ${a}(${point}%)` : `${a}(${point}%)`
 					i++
 				}
-				return a
+				return b
 			} else {
 				return answer.join(',')
 
