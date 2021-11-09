@@ -17,7 +17,7 @@
 				<audio :src="quiz[i].attached" controls />
 			</div>
 			<p>あなたの答え: {{ answer[quiz[i].uniqueId] }}</p>
-			<p>正答: {{ tsCheck(quiz[i].correctAnswer) }} (傾斜%: {{ tsCheck(quiz[i].correctAnswerIncline) }}</p>
+			<p>正答: {{ tsCheck(quiz[i].correctAnswer, quiz[i].correctAnswerIncline) }}</p>
 			<p>{{ isCorrect(quiz[i].correctAnswer, quiz[i].uniqueId) ? '正解です' : '不正解です' }}</p>
 			<p>解説</p>
 			<p>{{quiz[i].comment}}</p>
@@ -92,11 +92,20 @@ export default Vue.extend({
 				return 0
 			}
 		},
-		tsCheck: function (answer: string | string[] | number[]) {
+		tsCheck: function (answer: string | string[], point?: number[]) {
 			if (typeof answer === 'string') {
 				return answer
+			} else if(point) {
+				let a = ''
+				let i = 0
+				for(const a of answer) {
+					a = a ? `, ${a}(${point}%)` : `${a}(${point}%)`
+					i++
+				}
+				return a
 			} else {
 				return answer.join(',')
+
 			}
 		},
 		load: function (src: string) {
