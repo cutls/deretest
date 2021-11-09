@@ -7,7 +7,7 @@
 			<input type="text" v-model="go" />
 			<button @click="done">Go</button>
 		</p>
-		<p class="copyright">
+		<p>
 			<a href="https://github.com/cutls/deretest" target="_blank">GitHub</a>, Cutls P and all contributors
 		</p>
 	</div>
